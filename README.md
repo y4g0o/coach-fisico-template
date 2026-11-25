@@ -1,59 +1,61 @@
+🇺🇸 English · [🇧🇷 Português](README.pt-BR.md)
+
 # Coach físico
 
-Um coach de musculação e alimentação que vive numa pasta. As regras, o estado do aluno e os scripts são arquivos comuns, então qualquer agente ou modelo pode assumir o papel de coach.
+A strength-training and nutrition coach that lives in a folder. The rules, the trainee's state and the scripts are plain files, so any AI agent or model can take on the coach role.
 
-Os dados em `dados/` são de um aluno fictício, só para demonstração. Licença MIT; `referencias/hypertrophy-training/` é de disco-trooper/skills (MIT) e `referencias/taco/` é a Tabela TACO (NEPA/UNICAMP).
+The data in `dados/` belongs to a fictional trainee, for demonstration only. MIT license; `referencias/hypertrophy-training/` comes from disco-trooper/skills (MIT) and `referencias/taco/` is the TACO food composition table (NEPA/UNICAMP). File names, commands and content are in Portuguese.
 
-## O que é o quê
+## What is what
 
-| Peça | Onde | Para quê |
+| Piece | Where | Purpose |
 |---|---|---|
-| Regras do coach | `AGENTS.md` | Persona, método, erros que não se repetem, comandos |
-| Procedimentos | `.agents/skills/*/SKILL.md` | Check-in, fotos, medidas, ficha, treino, dieta |
-| Estado do aluno | `dados/estado.md` | Fonte da verdade: ficha atual, peso, decisões, pendências |
-| Dados | `dados/` | Log de treino, peso, medidas, fotos, fichas, dieta, check-ins |
-| Programa | `./coach` | Um comando para tudo; só precisa de Python 3 |
-| Evidências | `referencias/evidencias.md` | Fonte conferida de cada regra |
+| Coach rules | `AGENTS.md` | Persona, method, mistakes that must not repeat, commands |
+| Procedures | `.agents/skills/*/SKILL.md` | Weekly check-in, photos, body measurements, program, training log, diet |
+| Trainee state | `dados/estado.md` | Source of truth: current program, weight, decisions, open items |
+| Data | `dados/` | Training log, weight, measurements, photos, programs, diet, check-ins |
+| Program | `./coach` | One command for everything; needs only Python 3 |
+| Evidence | `referencias/evidencias.md` | Checked source for every rule |
 
-## Comandos
+## Commands
 
 ```
-./coach importar <arquivo>       export do Hevy/Strong/FitNotes ou CSV manual -> dados/treinos/log.csv
-./coach treino [--semanas N]     sessões, séries por músculo, progressão
-./coach ficha <ficha.md>         confere séries por sessão e por músculo
-./coach peso | medidas           médias semanais e circunferências
-./coach taco "<alimento>" [g]    macros pela Tabela TACO
-./coach contexto [--skill nome] ["tarefa"]   pacote único para colar em qualquer modelo
+./coach importar <file>          Hevy/Strong/FitNotes export or manual CSV -> dados/treinos/log.csv
+./coach treino [--semanas N]     sessions, sets per muscle, progression
+./coach ficha <program.md>       checks sets per session and per muscle
+./coach peso | medidas           weekly averages and circumferences
+./coach taco "<food>" [g]        macros from the TACO table
+./coach contexto [--skill name] ["task"]   single bundle to paste into any model
 python3 -m unittest discover tests
 ```
 
-## Dados de treino sem depender de app
+## Training data without depending on an app
 
-Tudo vira o log canônico `dados/treinos/log.csv`, uma linha por série:
+Everything becomes the canonical log `dados/treinos/log.csv`, one row per set:
 
 ```
 inicio,fim,sessao,exercicio,serie,tipo,kg,reps,rpe,distancia_km,duracao_s,fonte
 ```
 
-- **Hevy, Strong, FitNotes:** `./coach importar export.csv` (o formato é detectado pelo cabeçalho; `--lb` se os pesos estiverem em libras). Hevy foi testado com export real; Strong e FitNotes seguem descrições de terceiros.
-- **Qualquer outra fonte** (outro app, caderno, treino ditado): um CSV com `inicio,exercicio,kg,reps` e, se tiver, `sessao,rpe,tipo`. Exemplo em `tests/exemplos/manual.csv`.
-- **Nomes de exercício:** o nome canônico é a chave de `scripts/musculos.json`. Nomes em português ou de outros apps entram em `scripts/apelidos.json`. O que não for reconhecido aparece como `NAO MAPEADOS`.
+- **Hevy, Strong, FitNotes:** `./coach importar export.csv` (format detected from the header; `--lb` if weights are in pounds). Hevy was tested with a real export; Strong and FitNotes follow third-party descriptions.
+- **Any other source** (another app, a notebook, a dictated workout): a CSV with `inicio,exercicio,kg,reps` and, if available, `sessao,rpe,tipo`. Example in `tests/exemplos/manual.csv`.
+- **Exercise names:** the canonical name is the key in `scripts/musculos.json`. Portuguese names or names from other apps go in `scripts/apelidos.json`. Anything unrecognized shows up as `NAO MAPEADOS`.
 
-## Como ligar em cada agente ou modelo
+## Plugging it into each agent or model
 
-| Onde | Como | Situação |
+| Where | How | Notes |
 |---|---|---|
-| Antigravity CLI (`agy`) | `cd coach-fisico && agy` | Lê `AGENTS.md` e `.agents/skills`. Em uso |
-| Claude Code | `cd coach-fisico && claude` | Lê `CLAUDE.md` (que importa o `AGENTS.md`) e `.claude/skills` (atalho para `.agents/skills`) |
-| opencode, Codex CLI, Cursor e outros que leem `AGENTS.md` | abrir a pasta | Leem `AGENTS.md`; Codex e Gemini CLI também leem `.agents/skills` |
-| Modelo sem acesso a arquivos (ChatGPT, Gemini, modelo local) | `./coach contexto --skill checkin-semanal "check-in da semana" > contexto.md` e colar ou anexar | O pacote traz regras, estado, ficha e números já calculados. O modelo termina com um bloco `ATUALIZAR ESTADO`, que alguém aplica no `dados/estado.md` |
-| Modelo local pelo Ollama | `./coach contexto "pergunta" \| ollama run <modelo>` | Precisa de janela de contexto de ~32 mil tokens ou mais |
+| Antigravity CLI (`agy`) | `cd coach-fisico-template && agy` | Reads `AGENTS.md` and `.agents/skills` |
+| Claude Code | `cd coach-fisico-template && claude` | Reads `CLAUDE.md` (which imports `AGENTS.md`) and `.claude/skills` (a link to `.agents/skills`) |
+| opencode, Codex CLI, Cursor and others that read `AGENTS.md` | open the folder | Read `AGENTS.md`; Codex and Gemini CLI also read `.agents/skills` |
+| Model without file access (ChatGPT, Gemini, a local model) | `./coach contexto --skill checkin-semanal "weekly check-in" > contexto.md`, then paste or attach | The bundle carries rules, state, program and precomputed numbers. The model ends with an `ATUALIZAR ESTADO` block that someone applies to `dados/estado.md` |
+| Local model via Ollama | `./coach contexto "question" \| ollama run <model>` | Needs a context window of ~32k tokens or more |
 
-Observações:
-- O pacote de contexto tem dados pessoais de saúde. Colar num serviço de terceiros é decisão do dono dos dados.
-- Fotos não entram no pacote. Para avaliação visual, use um agente que leia arquivos ou anexe as fotos junto.
-- Um agente por vez edita o `dados/estado.md`. O histórico fica no git.
+Notes:
+- The context bundle contains personal health data. Pasting it into a third-party service is the data owner's call.
+- Photos are not in the bundle. For visual assessment, use an agent that reads files or attach the photos.
+- Only one agent at a time edits `dados/estado.md`. History lives in git.
 
-## Para outra pessoa usar
+## Using it for someone else
 
-O que é específico de um aluno fica todo em `dados/` (os arquivos deste repositório são um aluno fictício de exemplo). O resto (método, skills, scripts, evidências) serve para qualquer aluno: troque `dados/perfil.md` e `dados/estado.md`, apague os CSVs de exemplo e importe os seus treinos.
+Everything specific to a trainee lives in `dados/` (the files in this repository are a fictional example). The rest (method, skills, scripts, evidence) works for anyone: replace `dados/perfil.md` and `dados/estado.md`, delete the example CSVs and import your own workouts.
