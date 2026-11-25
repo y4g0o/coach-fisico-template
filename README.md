@@ -2,6 +2,8 @@
 
 # Coach físico
 
+[![CI](https://github.com/y4g0o/coach-fisico-template/actions/workflows/ci.yml/badge.svg)](https://github.com/y4g0o/coach-fisico-template/actions/workflows/ci.yml)
+
 A strength-training and nutrition coach that lives in a folder. The rules, the trainee's state and the scripts are plain files, so any AI agent or model can take on the coach role.
 
 The data in `dados/` belongs to a fictional trainee, for demonstration only. MIT license; `referencias/hypertrophy-training/` comes from disco-trooper/skills (MIT) and `referencias/taco/` is the TACO food composition table (NEPA/UNICAMP). File names, commands and content are in Portuguese.

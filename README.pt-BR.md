@@ -2,6 +2,8 @@
 
 # Coach físico
 
+[![CI](https://github.com/y4g0o/coach-fisico-template/actions/workflows/ci.yml/badge.svg)](https://github.com/y4g0o/coach-fisico-template/actions/workflows/ci.yml)
+
 Um coach de musculação e alimentação que vive numa pasta. As regras, o estado do aluno e os scripts são arquivos comuns, então qualquer agente ou modelo pode assumir o papel de coach.
 
 Os dados em `dados/` são de um aluno fictício, só para demonstração. Licença MIT; `referencias/hypertrophy-training/` é de disco-trooper/skills (MIT) e `referencias/taco/` é a Tabela TACO (NEPA/UNICAMP).
