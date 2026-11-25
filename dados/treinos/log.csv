@@ -1,0 +1,7 @@
+inicio,fim,sessao,exercicio,serie,tipo,kg,reps,rpe,distancia_km,duracao_s,fonte
+2026-11-09T18:30,2026-11-09T19:45,Upper A,Bench Press (Barbell),0,aquecimento,45.3592,10,,,,hevy
+2026-11-09T18:30,2026-11-09T19:45,Upper A,Bench Press (Barbell),1,trabalho,79.8323,8,9,,,hevy
+2026-11-11T00:00,,,Dumbbell Row,1,aquecimento,40,10,,,,manual
+2026-11-11T00:00,,,Dumbbell Row,2,trabalho,64,10,9,,,manual
+2026-11-11T00:00,,,Bench Press (Barbell),1,trabalho,76,8,9,,,manual
+2026-11-11T00:00,,,Pull Up,1,trabalho,,10,8,,,manual

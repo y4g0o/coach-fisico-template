@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+"""Coach fisico: ponto de entrada unico. Funciona de qualquer pasta e em qualquer agente com shell.
+
+  ./coach importar <arquivo>          export do Hevy/Strong/FitNotes ou CSV canonico -> dados/treinos/log.csv
+  ./coach treino [--semanas N] [--exercicio "Nome"]   sessoes, series por musculo, progressao
+  ./coach ficha <ficha.md>            confere series por sessao e por musculo de uma ficha
+  ./coach peso                        media semanal de peso (dados/peso.csv)
+  ./coach medidas                     circunferencias e razao ombro/cintura (dados/medidas.csv)
+  ./coach taco "<alimento>" [gramas]  macros pela Tabela TACO
+  ./coach contexto [--skill nome] ["tarefa"]   pacote unico em Markdown para colar em qualquer modelo sem acesso a arquivos
+"""
+import os
+import runpy
+import sys
+from pathlib import Path
+
+RAIZ = Path(__file__).resolve().parent
+COMANDOS = ["importar", "treino", "ficha", "peso", "medidas", "taco", "contexto"]
+
+if len(sys.argv) < 2 or sys.argv[1] not in COMANDOS:
+    sys.exit(__doc__)
+args = [str(Path(x).resolve()) if Path(x).exists() else x for x in sys.argv[2:]]
+os.chdir(RAIZ)
+sys.path.insert(0, str(RAIZ / "scripts"))
+sys.argv = [sys.argv[1]] + args
+runpy.run_path(str(RAIZ / "scripts" / f"{sys.argv[0]}.py"), run_name="__main__")
